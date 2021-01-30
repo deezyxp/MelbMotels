@@ -8,9 +8,9 @@ export default () => {
       <Row noGutters className="text-center">
         <Col>
           <p className="thanks-header">Thank You!</p>
-          <i className="fas fa-pizza-slice thank-you-pizza"></i>
+          <i className="fas fa-bacon thank-you-pho"></i>
           <p className="thanks-subtext">
-            You should receive an email with the details of your reservation.
+            Please check your email to confirm your reservation, we look forward to seeing you!
           </p>
         </Col>
       </Row>
