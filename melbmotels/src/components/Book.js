@@ -83,123 +83,18 @@ export default props => {
     return tables.length;
   };
 
-  // Ensure all reservation details are filled
-  const reserve = async () => {
-    if (
-      (booking.name.length === 0) |
-      (booking.phone.length === 0) |
-      (booking.email.length === 0)
-    ) {
-      console.log("Incomplete Details");
-      setReservationError(true);
-    } else {
-     
-    }
-  // Clicking on a table sets the selection state
-  const selectTable = (table_name, table_id) => {
-    setSelection({
-      ...selection,
-      table: {
-        name: table_name,
-        id: table_id
-      }
-    });
+  return (
+      <div>
+          <p>Booking Page</p>
+      </div>
+  );
   };
 
-  // Generate party size menu
-  const getSizes = () => {
-    let newSizes = [];
-
-    for (let i = 1; i < 8; i++) {
-      newSizes.push(
-        <DropdownItem
-          key={i}
-          className="booking-dropdown-item"
-          onClick={e => {
-            let newSel = {
-              ...selection,
-              table: {
-                ...selection.table
-              },
-              size: i
-            };
-            setSelection(newSel);
-          }}
-        >
-          {i}
-        </DropdownItem>
-      );
-    }
-    return newSizes;
-  };
-
-  // Generate Area Menu
-  const getArea = () => {
-    let newArea = [];
-    area.forEach(loc => {
-      newArea.push(
-        <DropdownItem
-          key={loc}
-          className="booking-dropdown-item"
-          onClick={_ => {
-            let newSel = {
-              ...selection,
-              table: {
-                ...selection.table
-              },
-              area: loc
-            };
-            setSelection(newSel);
-          }}
-        >
-          {loc}
-        </DropdownItem>
-      );
-    });
-    return newArea;
-  };
-
-  // Generate booking time menu
-  const getTimes = () => {
-    let newTimes = [];
-    times.forEach(time => {
-      newTimes.push(
-        <DropdownItem
-          key={time}
-          className="booking-dropdown-item"
-          onClick={_ => {
-            let newSel = {
-              ...selection,
-              table: {
-                ...selection.table
-              },
-              time: time
-            };
-            setSelection(newSel);
-          }}
-        >
-          {time}
-        </DropdownItem>
-      );
-    });
-    return newTimes;
-  };
-
-  // Generating tables (refer to backend to obtain ID and name)
-  const getTables = () => {
-    console.log("Getting tables");
-    if (getEmptyTables() > 0) {
-    }
-
-    return {
-        // Once data obtained generate button to confirm reservation
-        // <p> You are booking table "table name(id)"
-        // else reservation error fill out all appropriate details
-    }
-// Hard code to produce html for menu buttons
-
-
-
-}}};
-
-  
+//   Check if tables are available
+//   Match availability with group size 
+//   Check if reservation details are all filled out
+//   Generate party size menu
+//   Generate area menu
+//   Generate time menu
+//   Generate available tables
+//   Render HTML code to display menus and buttons 
