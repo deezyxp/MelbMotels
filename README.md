@@ -1,1 +1,1 @@
-# MelbMotels
+# PhoTastic
