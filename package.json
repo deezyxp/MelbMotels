@@ -1,0 +1,32 @@
+{
+  "name": "melbmotels",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"nodemon --ignore 'melbmotels/*'\" \"npm run client\"",
+    "client": "cd melbmotels && npm run start",
+    "seed": "cd database/seeds && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deezyxp/MelbMotels.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deezyxp/MelbMotels/issues"
+  },
+  "homepage": "https://github.com/deezyxp/MelbMotels#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.14"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "faker": "^5.2.0",
+    "nodemon": "^2.0.7"
+  }
+}
