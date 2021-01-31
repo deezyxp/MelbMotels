@@ -1,5 +1,5 @@
 {
-  "name": "melbmotels",
+  "name": "photastic",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"nodemon --ignore 'melbmotels/*'\" \"npm run client\"",
     "client": "cd melbmotels && npm run start",
-    "seed": "cd database/seeds && node index.js"
+    "seed": "cd database/seeds && node index.js",
+    "create-data": "node database/seeds/getRandomModel.js"
+    
   },
   "repository": {
     "type": "git",
