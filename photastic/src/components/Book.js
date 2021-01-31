@@ -191,7 +191,7 @@ export default props => {
               table: {
                 ...selection.table
               },
-              location: loc
+              area: loc
             };
             setSelection(newSel);
           }}
@@ -336,7 +336,7 @@ export default props => {
             <Col xs="12" sm="3">
               <UncontrolledDropdown>
                 <DropdownToggle color="none" caret className="booking-dropdown">
-                  {selection.location}
+                  {selection.area}
                 </DropdownToggle>
                 <DropdownMenu right className="booking-dropdown-menu">
                   {getArea()}
