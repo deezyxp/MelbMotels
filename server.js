@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 // const connectDb = require("./config/database");
 const routes = require("./routes");
+const path = require("path");
 dotenv.config({ path: ".env" });
 const app = express();
 
@@ -16,6 +17,9 @@ if (process.env.NODE_ENV === "production") {
 
 
 // Add routes, both API and view
+app.use("/booking", require("./routes/bookingRoute"));
+app.use("/reserve", require("./routes/reservationRoute"));
+
 // app.use("/api", passportConfig.authenticate('local'));
 app.use('/api',  routes);
 // Start the API server
