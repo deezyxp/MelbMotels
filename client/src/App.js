@@ -8,8 +8,6 @@ import ThankYou from './components/ThankYou'
 function App() {
   const [page, setPage] = useState(0);
 
-
-
   return (
     <>
     <Navbar setPage={setPage}/>

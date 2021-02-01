@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
-const tableSchema = new mongoose.Schema(
+const tableSchema = new Schema(
     {
         name: String,
         capacity: Number,
@@ -13,13 +12,12 @@ const tableSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Reservation'
         }
-        // seat_num: { type: String, required: true },
     },
     {
         timestamps: true,
-    
     }
 );
 
 const Table = mongoose.model("Table", tableSchema);
+
 module.exports = Table;

@@ -1,7 +1,8 @@
 import React from 'react'
 import {Row, Col, Button} from "reactstrap"
+import PhoImage from '../images/pho.jpeg';
 
-const Home = (props) => {
+const Home = props => {
     return (
         <div>
             <Row noGutters className="text-center align-items-center">
@@ -21,15 +22,13 @@ const Home = (props) => {
                 </Col>
             </Row>
             <Row noGutters className="text-center background-img-container">
-
                     <Col>
                     <img
-                        src={require("../images/pho.jpeg")}
+                        src={PhoImage}
                         alt="pho"
                         className="background-img"
                         />
                     </Col>
-
             </Row>
         </div>
     )

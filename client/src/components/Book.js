@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import DatePicker from 'react-datepicker';
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import au from 'date-fns/locale/en-AU';
 import {
   Row,
   Col,
@@ -11,9 +15,11 @@ import {
 } from "reactstrap";
 
 import Table from "./Table.js";
+registerLocale('en-AU', au)
 
-export default props => {
+const Book = props => {
   const [totalTables, setTotalTables] = useState([]);
+  const [availableTables, setAvailableTables] = useState([]);
 
   // User selection
   const [selection, setSelection] = useState({
@@ -83,33 +89,72 @@ export default props => {
     return tables.length;
   };
 
-  useEffect(() => {
-    // Check availability of tables from our database when a given date and time is selected from dropdown
-    if (selection.time && selection.date) {
-      (async () => {
-        let datetime = getDate();
-        let res = await fetch("/booking", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            date: datetime
-          })
-        });
-        res = await res.json();
-        // Filter available tables with area 
-        let tables = res.tables.filter(
-          table =>
-            (selection.size > 0 ? table.capacity >= selection.size : true) &&
-            (selection.location !== "Any Location"
-              ? table.location === selection.location
-              : true)
-        );
-        setTotalTables(tables);
-      })();
-    }
-  }, [selection.time, selection.date, selection.size, selection.location]);
+  // useEffect(() => {
+  //   // Check availability of tables from our database when a given date and time is selected from dropdown
+  //   if (selection.time && selection.date) {
+  //     (async () => {
+  //       let datetime = getDate();
+  //       let res = await fetch("/booking", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json"
+  //         },
+  //         body: JSON.stringify({
+  //           date: datetime
+  //         })
+  //       });
+  //       res = await res.json();
+  //       // Filter available tables with area 
+  //       let tables = res.tables.filter(
+  //         table =>
+  //           (selection.size > 0 ? table.capacity >= selection.size : true) &&
+  //           (selection.location !== "Any Location"
+  //             ? table.location === selection.location
+  //             : true)
+  //       );
+  //       setTotalTables(tables);
+  //     })();
+  //   }
+  // }, [selection.time, selection.date, selection.size, selection.location]);
+
+  const getAvailableTables = async () => {
+    console.log(selection);
+
+    let res = await fetch("/table/available", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tableFilter: selection
+      })
+    });
+
+    setAvailableTables(await res.json());
+  };
+
+  const reserveTable = async (table) => {    
+    let res = await fetch("/reservation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: booking.name,
+        phone: booking.phone,
+        email: booking.email,
+        tableDetails: table,
+        date: selection.date.toLocaleDateString(),
+        datetime: selection.date
+      })
+    });
+
+    console.log(await res.json());
+
+    // Redirect to confirmation screen with props
+    props.setPage(2);
+    
+  }
 
   // Create reservation once details are filled out by User
   const reserve = async () => {
@@ -290,10 +335,33 @@ export default props => {
         </Col>
       </Row>
 
+      {/* Available Tables */}
+      {
+        availableTables.length !== 0 ? (
+          availableTables.map(table => (
+            <div>
+              <h2>{ table.name }</h2>
+              <h3>Capacity: {table.capacity}</h3>
+              <Button
+                color="none"
+                className="book-table-btn"
+                onClick={_ => {
+                  reserveTable(table);
+                }}
+              >
+                Reserve Table
+                </Button>
+            </div>
+          ))
+        ) : (
+            <h1>Please enter details to find available tables</h1>
+        )
+      }
+
       {!selection.table.id ? (
         <div id="reservation-stuff">
           <Row noGutters className="text-center align-items-center">
-            <Col xs="12" sm="3">
+            {/* <Col xs="12" sm="3">
               <input
                 type="date"
                 required="required"
@@ -322,6 +390,17 @@ export default props => {
                   }
                 }}
               ></input>
+            </Col> */}
+            <Col>
+              <DatePicker
+                selected={null}
+                onChange={date => setSelection({ ...selection, date})}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                timeCaption="time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+              />
             </Col>
             <Col xs="12" sm="3">
               <UncontrolledDropdown>
@@ -355,111 +434,116 @@ export default props => {
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Col>
-          </Row>
-          <Row noGutters className="tables-display">
-            <Col>
-              {getEmptyTables() > 0 ? (
-                <p className="available-tables">{getEmptyTables()} available</p>
-              ) : null}
-
-              {selection.date && selection.time ? (
-                getEmptyTables() > 0 ? (
-                  <div>
-                    <div className="table-key">
-                      <span className="empty-table"></span> &nbsp; Available
-                      &nbsp;&nbsp;
-                      <span className="full-table"></span> &nbsp; Unavailable
-                      &nbsp;&nbsp;
-                    </div>
-                    <Row noGutters>{getTables()}</Row>
-                  </div>
-                ) : (
-                  <p className="table-display-message">No Available Tables</p>
-                )
-              ) : (
-                <p className="table-display-message">
-                  Please select a date and time for your reservation.
-                </p>
-              )}
-            </Col>
-          </Row>
-        </div>
-      ) : (
-        <div id="confirm-reservation-stuff">
-          <Row
-            noGutters
-            className="text-center justify-content-center reservation-details-container"
-          >
-            <Col xs="12" sm="3" className="reservation-details">
-              <Input
-                type="text"
-                bsSize="lg"
-                placeholder="Name"
-                className="reservation-input"
-                value={booking.name}
-                onChange={e => {
-                  setBooking({
-                    ...booking,
-                    name: e.target.value
-                  });
-                }}
-              />
-            </Col>
-            <Col xs="12" sm="3" className="reservation-details">
-              <Input
-                type="text"
-                bsSize="lg"
-                placeholder="Phone Number"
-                className="reservation-input"
-                value={booking.phone}
-                onChange={e => {
-                  setBooking({
-                    ...booking,
-                    phone: e.target.value
-                  });
-                }}
-              />
-            </Col>
-            <Col xs="12" sm="3" className="reservation-details">
-              <Input
-                type="text"
-                bsSize="lg"
-                placeholder="Email"
-                className="reservation-input"
-                value={booking.email}
-                onChange={e => {
-                  setBooking({
-                    ...booking,
-                    email: e.target.value
-                  });
-                }}
-              />
-            </Col>
-          </Row>
-          <Row noGutters className="text-center">
             <Col>
               <Button
                 color="none"
                 className="book-table-btn"
                 onClick={_ => {
-                  reserve();
+                  getAvailableTables();
                 }}
               >
-                Book Now
-              </Button>
+                Find Available Tables
+                </Button>
             </Col>
           </Row>
+          {/* <Row noGutters className="tables-display">
+            <Col>
+              {availableTables > 0 ? (
+                <p className="available-tables">{getEmptyTables()} available</p>
+              ) : null}
+
+              {selection.date && selection.time ? (
+                availableTables > 0 ? (
+                  <div>
+                    <div className="table-key">
+                      <span className="empty-table"></span> &nbsp; Available
+                        &nbsp;&nbsp;
+                        <span className="full-table"></span> &nbsp; Unavailable
+                        &nbsp;&nbsp;
+                      </div>
+                    <Row noGutters>{getTables()}</Row>
+                  </div>
+                ) : (
+                    <p className="table-display-message">No Available Tables</p>
+                  )
+              ) : (
+                  <p className="table-display-message">
+                    Please select a date and time for your reservation.
+                  </p>
+                )}
+            </Col>
+          </Row> */}
         </div>
-      )}
+      ) : (
+          <div></div>
+        )}
+      <div id="confirm-reservation-stuff">
+        <Row
+          noGutters
+          className="text-center justify-content-center reservation-details-container"
+        >
+          <Col xs="12" sm="3" className="reservation-details">
+            <Input
+              type="text"
+              bsSize="lg"
+              placeholder="Name"
+              className="reservation-input"
+              value={booking.name}
+              onChange={e => {
+                setBooking({
+                  ...booking,
+                  name: e.target.value
+                });
+              }}
+            />
+          </Col>
+          <Col xs="12" sm="3" className="reservation-details">
+            <Input
+              type="text"
+              bsSize="lg"
+              placeholder="Phone Number"
+              className="reservation-input"
+              value={booking.phone}
+              onChange={e => {
+                setBooking({
+                  ...booking,
+                  phone: e.target.value
+                });
+              }}
+            />
+          </Col>
+          <Col xs="12" sm="3" className="reservation-details">
+            <Input
+              type="text"
+              bsSize="lg"
+              placeholder="Email"
+              className="reservation-input"
+              value={booking.email}
+              onChange={e => {
+                setBooking({
+                  ...booking,
+                  email: e.target.value
+                });
+              }}
+            />
+          </Col>
+        </Row>
+        <Row noGutters className="text-center">
+          <Col>
+            <Button
+              color="none"
+              className="book-table-btn"
+              onClick={_ => {
+                reserve();
+              }}
+            >
+              Book Now
+                </Button>
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 };
 
-//   Check if tables are available
-//   Match availability with group size 
-//   Check if reservation details are all filled out
-//   Generate party size menu
-//   Generate area menu
-//   Generate time menu
-//   Generate available tables
-//   Render HTML code to display menus and buttons 
+export default Book;
