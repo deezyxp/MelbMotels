@@ -6,7 +6,12 @@ function connectDb(){
         {
             useCreateIndex: true,
             useNewUrlParser: true,
+        }, (err) => {
+            if (err) console.error(err); 
+
+            console.log("successfully connected to DB")
         }
     );
-}
+};
+
 module.exports = connectDb;

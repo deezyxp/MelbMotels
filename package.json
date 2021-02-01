@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon server.js",
     "start": "concurrently \"nodemon --ignore 'melbmotels/*'\" \"npm run client\"",
     "client": "cd melbmotels && npm run start",
     "seed": "cd database/seeds && node index.js",

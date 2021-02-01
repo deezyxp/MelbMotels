@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const reservationScheme = require("./Reservation").schema
+
 
 const tableSchema = new mongoose.Schema(
     {
@@ -10,7 +10,8 @@ const tableSchema = new mongoose.Schema(
         area: String,
         reservation: {
             required: false,
-            type: reservationSchema
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Reservation'
         }
         // seat_num: { type: String, required: true },
     },

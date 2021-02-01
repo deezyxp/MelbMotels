@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const tableSchema = require("./Table")
+
 const Schema = mongoose.Schema;
 const daySchema = new Schema(
     {
@@ -12,5 +12,8 @@ const daySchema = new Schema(
     }
 );
 
+
 const Day = mongoose.model("Day", daySchema);
+
+
 module.exports = Day;

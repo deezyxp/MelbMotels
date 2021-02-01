@@ -1,17 +1,20 @@
 var express = require("express");
 var router = express.Router();
-var mongoose = require("mongoose");
 
-const Date = require("../models/day").model;
+const Day = require("../models/Day");
 
 
 router.post("/", function(req, res, next) {
   console.log("booking request posted");
 
   console.log(req.body);
-  const dateTime = new Date(req.body.date);
+  
+  // const dateTime = new Day({
+  //   date: req.body.date
+  // });
 
-  Date.find({ date: dateTime }, (err, docs) => {
+  Day.find({ date: new Date(req.body.date) }, (err, docs) => {
+    console.log(err);
     if (!err) {
       if (docs.length > 0) {
         // Booking exists

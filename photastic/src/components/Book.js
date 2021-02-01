@@ -88,7 +88,7 @@ export default props => {
     if (selection.time && selection.date) {
       (async () => {
         let datetime = getDate();
-        let res = await fetch("http://localhost:3005/booking", {
+        let res = await fetch("/booking", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -122,7 +122,7 @@ export default props => {
       setReservationError(true);
     } else {
       const datetime = getDate();
-      let res = await fetch("http://localhost:3005/reserve", {
+      let res = await fetch("/reserve", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
