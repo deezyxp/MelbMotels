@@ -152,7 +152,7 @@ const Book = props => {
     console.log(await res.json());
 
     // Redirect to confirmation screen with props
-    props.setPage(2);
+    props.setPage(3);
     
   }
 
