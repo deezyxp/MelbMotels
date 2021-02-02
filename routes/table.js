@@ -13,7 +13,7 @@ router.post('/available', async (req, res) => {
         date: new Date(req.body.tableFilter.date).toLocaleDateString() // figure out how to filter by time as well
     });
 
-    const tables = await Table.find({}); // 23
+    const tables = await Table.find({capacity : {"$lt": req.body.tableFilter.size}}); // 23
 
     console.log(`There are ${reservations.length} reservations booked for this day`);
 

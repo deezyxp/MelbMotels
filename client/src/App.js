@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Book from './components/Book';
-import ThankYou from './components/ThankYou'
+import Confirmation from './components/Confirmation'
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
     <Navbar setPage={setPage}/>
     {page === 0 ? <Home setPage={setPage} />: null}
     {page === 1 ? <Book setPage={setPage} />: null}
-    {page === 2 ? <ThankYou setPage={setPage} />: null}
+    {page === 2 ? <Confirmation setPage={setPage} />: null}
     </> 
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -152,7 +152,7 @@ const Book = props => {
     console.log(await res.json());
 
     // Redirect to confirmation screen with props
-    props.setPage(3);
+    props.setPage(2);
     
   }
 
